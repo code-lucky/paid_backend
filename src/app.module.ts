@@ -96,7 +96,7 @@ import { CategoryModule } from './api/backend/category/category.module';
       inject: [ConfigService],
       imports: undefined
     }),
-    RedisModule,
+    // RedisModule,
     EmailModule,
     FileModule,
     AuthModule,
