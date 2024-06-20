@@ -1,89 +1,72 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Permission } from "./permission.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RoleData } from "./role-data.entity";
 
-@Entity('menu')
-export class Menu {
+@Entity({
+    name: 'menu'
+})
+export class Menu{
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
-        type: 'int',
-        comment: '父级ID',
-        default: 0,
+        comment: '菜单名称',
+    })
+    menu_name: string;
+
+    @Column({
+        comment: '菜单父ID',
+        default: 0
     })
     pid: number;
 
     @Column({
-        type: 'varchar',
-        length: 100,
-        comment: '菜单名称'
-    })
-    name: string;
-
-    @Column({
-        type: 'varchar',
-        length: 100,
-        comment: '菜单标识',
-        nullable: true,
-    })
-    label: string;
-    
-    @Column({
-        type: 'varchar',
-        length: 100,
         comment: '菜单路径',
     })
-    route: string;
+    menu_path: string;
 
     @Column({
-        type: 'varchar',
-        length: 100,
-        comment: '组件路径',
-        nullable: true,
+        comment: '菜单组件，指向的文件名称',
+        nullable: true
     })
-    component: string;
+    menu_component: string;
 
     @Column({
-        type: 'int',
-        comment: '菜单类型',
-        default: 0,
+        comment: '菜单图标',
+        nullable: true
     })
-    type: number;
-
+    menu_icon: string;
+    
     @Column({
-        type: 'varchar',
-        comment: 'icon图标',
-        nullable: true,
-    })
-    icon: string;
-
-    @Column({
-        type: 'int',
-        comment: '排序',
-        default: 0,
+        comment: '菜单排序',
+        default: 0
     })
     sort: number;
 
     @Column({
-        type: 'int',
-        comment: '是否删除',
-        default: 0,
+        comment: '菜单是否隐藏，0是显示，1是隐藏',
+        default: 0
     })
-    delete: number;
+    hide: number;
 
-    @OneToMany(() => Permission, permission => permission.menu)
-    permissions: Permission[];
+    @Column({
+        name: 'is_delete',
+        comment: '逻辑删除0是正常状态，1是删除',
+        default: 0
+    })
+    is_delete: number;
 
     @CreateDateColumn({
-        type: 'datetime',
-        comment: '创建时间'
+        name: 'create_time'
     })
-    created_at: Date;
+    create_time: Date;
 
-    @UpdateDateColumn({
-        type: 'datetime',
-        comment: '更新时间'
+    @CreateDateColumn({
+        name: 'update_time'
     })
-    updated_at: Date;
+    update_time: Date;
+
+    @OneToMany(() => RoleData, roleData => roleData.menu)
+    roleData: RoleData[];
+  children: any[];
 }

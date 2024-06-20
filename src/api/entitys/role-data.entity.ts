@@ -1,23 +1,16 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { RoleData } from "./role-data.entity";
-import { User } from "./user.entity";
+import { Role } from "./role.entity";
+import { Menu } from "./menu.entity";
 
 @Entity({
-    name: 'role'
+    name: 'role_data'
 })
-export class Role{
+export class RoleData{
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
-        comment: '角色名称',
-        name: 'role_name'
-    })
-    role_name: string;
-
-    @Column({
-        name: 'is_delete',
         comment: '逻辑删除0是正常状态，1是删除',
         default: 0
     })
@@ -33,9 +26,19 @@ export class Role{
     })
     update_time: Date;
 
-    @OneToMany(() => RoleData, roleData => roleData.role)
-    roleData: RoleData[];
+    @ManyToOne(() => Role, role => role.roleData)
+    role: Role;
 
-    @OneToMany(() => User, user => user.role)
-    user: User;
+    @ManyToOne(() => Menu, menu => menu.roleData)
+    menu: Menu;
+
+    @Column({
+        comment: '角色ID'
+    })
+    roleId: number;
+
+    @Column({
+        comment: '菜单ID'
+    })
+    menuId: number; 
 }

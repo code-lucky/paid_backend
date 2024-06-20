@@ -1,36 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, Request } from '@nestjs/common';
 import { MenuService } from './menu.service';
+import { RequireLogin } from 'src/decorator/custom.decorator';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 
+@RequireLogin()
 @Controller('menu')
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  
+  @Inject(MenuService)
+  private menuService: MenuService;
 
-  @Post('create')
-  async create(@Body() createMenuDto: CreateMenuDto) {
-    return await this.menuService.create(createMenuDto);
+  @Get('menuList')
+  async getMenuList(@Request() req) {
+    return this.menuService.menuList(req.user.userId);
   }
 
-  @Get('list')
-  async findAll() {
-    return await this.menuService.findAll();
+  @Post('createMenu')
+  async createMenu(@Body() createMenuDto: CreateMenuDto) {
+    return this.menuService.createMenu(createMenuDto);
   }
 
-  @Get('detail/:id')
-  async findOne(@Param('id') id: string) {
-    return await this.menuService.findOne(+id);
+  @Post('updateMenu')
+  async updateMenu(@Body() updateMenuDto: UpdateMenuDto) {
+    return this.menuService.modifMenu(updateMenuDto);
   }
 
-
-  @Post('update')
-  async update(@Body() updateMenuDto: UpdateMenuDto) {
-    return await this.menuService.update(updateMenuDto);
+  @Get('treeMenu')
+  async treeMenu() {
+    return this.menuService.treeMenu();
   }
 
+  @Get('getMenuByTop')
+  async getMenuByTop() {
+    return this.menuService.getMenuListByTop();
+  }
 
-  @Post('delete/:id')
-  async remove(@Param('id') id: string) {
-    return await this.menuService.remove(+id);
+  @Post('deleteMenu/:id')
+  async deleteMenu(@Param('id') id: string) {
+    return this.menuService.deleteMenu(id);
+  }
+
+  @Get('getMenu/:id')
+  async getMenu(@Param('id') id: number) {
+    return this.menuService.getMenu(id);
   }
 }

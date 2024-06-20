@@ -15,10 +15,11 @@ import { LoginGuard } from './guard/login.guard';
 import { FileModule } from './api/file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AuthModule } from './api/auth/auth.module';
 import { MenuModule } from './api/menu/menu.module';
 import { RoleModule } from './api/role/role.module';
-import { PermissionModule } from './api/permission/permission.module';
+import { RoleDataModule } from './api/role-data/role-data.module';
+import { UserModule } from './api/user/user.module';
+import { SystemLogModule } from './api/system-log/system-log.module';
 import { IndexModule } from './api/front/index/index.module';
 import { ClassesModule } from './api/backend/classes/classes.module';
 import { CategoryModule } from './api/backend/category/category.module';
@@ -96,16 +97,17 @@ import { CategoryModule } from './api/backend/category/category.module';
       inject: [ConfigService],
       imports: undefined
     }),
-    // RedisModule,
+    RedisModule,
     EmailModule,
+    UserModule,
     FileModule,
-    AuthModule,
     MenuModule,
     RoleModule,
-    PermissionModule,
+    RoleDataModule,
+    SystemLogModule,
     IndexModule,
     ClassesModule,
-    CategoryModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [

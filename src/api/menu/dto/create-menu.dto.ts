@@ -2,24 +2,24 @@ import { IsNotEmpty } from "class-validator";
 
 export class CreateMenuDto {
 
-    @IsNotEmpty({ message: '父级ID不能为空' })
+    @IsNotEmpty({
+        message: '菜单名称不能为空'
+    })
+    menu_name: string;
+
     pid: number;
 
-    @IsNotEmpty({ message: '菜单名称不能为空' })
-    name: string;
+    @IsNotEmpty({
+        message: '菜单路径不能为空'
+    })
+    menu_path: string;
 
-    label: string;
+    menu_component: string;
 
-    @IsNotEmpty({ message: '菜单路径不能为空' })
-    route: string;
+    menu_icon: string;
 
-    @IsNotEmpty({ message: '组件路径不能为空' })
-    component: string;
-
-    @IsNotEmpty({ message: '菜单类型不能为空' })
-    type: number;
-
-    icon: string;
-
+    @IsNotEmpty({
+        message: '排序不能为空'
+    })
     sort: number;
 }
